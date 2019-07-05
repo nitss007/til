@@ -1,7 +1,8 @@
+#!/usr/bin/env php
 <?php
 
 if (!isset($argv[1])) {
-    echo 'Usage: php generate.php [SUBJECT]';
+    echo 'Usage: php generate.php [SUBJECT]' . PHP_EOL;
     exit(1);
 }
 
