@@ -9,7 +9,10 @@ if (!isset($argv[1])) {
 $argv[0] = '';
 $args = trim(implode(' ', $argv));
 $filename = date('Y-m-d').'_'.str_replace(' ', '-', strtolower($args)).'.md';
-echo 'Run:' . PHP_EOL . PHP_EOL . 'vi ' . $filename . PHP_EOL;
+echo 'Run:' . PHP_EOL . PHP_EOL 
+    . 'vi ' . $filename . PHP_EOL . PHP_EOL 
+    . 'Then run:' . PHP_EOL . PHP_EOL 
+    . 'git commit ' . $filename . ' -m"Add ' . date('Y-m-d') . ' ' . $args . '"' . PHP_EOL . PHP_EOL;
 
 if (file_exists(__DIR__ . '/' . $filename)) {
     echo PHP_EOL . 'File already exists! Not overwriting.' . PHP_EOL;
