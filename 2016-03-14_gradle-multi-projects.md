@@ -1,4 +1,4 @@
-# Multi-Project with Gradle
+## Multi-Project with Gradle
 
 Gradle supports including other projects as dependencies. A good example for this can be found [here](https://github.com/pkainulainen/gradle-examples/tree/master/multi-project-build) as explained in the [blog post](http://www.petrikainulainen.net/programming/gradle/getting-started-with-gradle-creating-a-multi-project-build/).
 

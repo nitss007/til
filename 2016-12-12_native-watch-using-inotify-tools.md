@@ -1,4 +1,4 @@
-# Native watch using inotify-tools
+## Native Watch Using `inotify-tools`
 
 Don't bother installing node or ruby gems when you can simply run the following inline command on any UNIX system with inotify-tools installed:
 

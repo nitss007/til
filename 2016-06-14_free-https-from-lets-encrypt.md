@@ -1,4 +1,4 @@
-# Free HTTPS from Lets Encrypt
+## Free HTTPS from Lets Encrypt
 
 [Let's Encrypt](https://letsencrypt.org/) provides free certificates for everyone. 90 day renewal can be automated through cronjobs.
 

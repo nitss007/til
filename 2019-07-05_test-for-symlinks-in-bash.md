@@ -1,4 +1,4 @@
-# Test for symlinks in Bash
+## Test for Symlinks in Bash
 
 Use `-L` instead of `-h` for compatibility.
 

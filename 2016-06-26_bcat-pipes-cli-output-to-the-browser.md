@@ -1,4 +1,4 @@
-# bcat pipes cli output to the browser
+## bcat pipes cli output to the browser
 
 I finally decided to find out how to pipe HTML straight to a browser without having to write it 
 to a file and then open that file in the browser and then deleting the file etc.

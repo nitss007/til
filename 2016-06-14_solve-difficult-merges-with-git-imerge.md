@@ -1,4 +1,4 @@
-# Solve difficult merges with git-imerge
+## Solve difficult merges with git-imerge
 
 [git-imerge](https://github.com/mhagger/git-imerge) solves the problem of resolving many merge conflicts in large merge operations.
 

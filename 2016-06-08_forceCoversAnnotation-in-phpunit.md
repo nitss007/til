@@ -1,4 +1,4 @@
-# forceCoversAnnotation in PHPUnit
+## `forceCoversAnnotation` in PHPUnit
 
 Up until now I've always been using the `beStrictAboutCovers` in the `phpunit.xml` configuration file. Today I learned about the `forceCoversAnnotation` annotation.
 

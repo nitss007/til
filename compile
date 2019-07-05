@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+echo "# *T*oday *I* *L*earned 🤯
+
+(For usage refer to [USAGE.md](USAGE.md))
+
+" > README.md
+cat 201* >> README.md
+echo "
+Generated on $(date)" >> README.md
+
+git add README.md

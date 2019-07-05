@@ -1,4 +1,4 @@
-# screenkey for live coding
+## Screenkey for Live Coding
 
 [screenkey](https://github.com/wavexx/screenkey) is a python app which shows key presses in an overlay on the screen. Nice for live coding to show off key combinations and shortcuts.
 
