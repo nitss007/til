@@ -17,7 +17,3 @@ will generate a file like `YYYY-MM-DD_some-pretty-title-case.md` with the follow
 ```
 
 Edit the file, run `./compile` and then commit and push.
-
-## Lessons
-
-
