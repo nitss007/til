@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+source "$HOME/dotfiles/scripts/helpers"
+
 ./compile /tmp/til-pre-commit-check.md
 
-[[ $(diff README.md /tmp/til-pre-commit-check.md | wc -l) -eq 4 ]]  || exit 1
+TIMESTAMP_DIFF_OFFSET=4
+let "DIFF_COUNT = $(diff README.md /tmp/til-pre-commit-check.md | wc -l) - $TIMESTAMP_DIFF_OFFSET"
+
+if [[ $DIFF_COUNT != 0 ]]
+then
+    _error "README out of date, please compile ..."
+    exit 1
+fi
+
+_success "README looks fine, commiting ..."
