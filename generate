@@ -13,8 +13,10 @@ echo 'Run:' . PHP_EOL . PHP_EOL . 'vi ' . $filename . PHP_EOL;
 
 if (file_exists(__DIR__ . '/' . $filename)) {
     echo PHP_EOL . 'File already exists! Not overwriting.' . PHP_EOL;
+    exit(1);
 }
 file_put_contents(
     $filename,
     '# '.$args.PHP_EOL.PHP_EOL
 );
+echo exec('git -C "' . __DIR__ . '" add "' . $filename . '"');
