@@ -15,3 +15,4 @@
  - `$@`
     All arguments.
 
+Note: Always quote variables to avoid word-splitting (except when using `[[` for tests). Run `shellcheck` to make sure.

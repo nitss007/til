@@ -109,6 +109,7 @@ while inotifywait -r src; do make; done
  - `$@`
     All arguments.
 
+Note: Always quote variables to avoid word-splitting (except when using `[[` for tests). Run `shellcheck` to make sure.
 ## Test for Symlinks in Bash
 
 Use `-L` instead of `-h` for compatibility.
@@ -122,4 +123,4 @@ fi
 ```
 
 
-Generated on Fr 5. Jul 17:44:33 CEST 2019
+Generated on Fr 5. Jul 17:46:53 CEST 2019
