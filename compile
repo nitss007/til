@@ -4,13 +4,14 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-echo "# *T*oday *I* *L*earned 🤯
+OUT_FILE="${1:-README.md}"
 
-(For usage refer to [USAGE.md](USAGE.md))
+echo "# **T**oday **I** **L**earned 🤯
 
-" > README.md
-cat 201* >> README.md
+*(For usage refer to [USAGE.md](USAGE.md))*
+" > "${OUT_FILE}"
+cat 201* >> "${OUT_FILE}"
 echo "
-Generated on $(date)" >> README.md
+Generated on $(date)" >> "${OUT_FILE}"
 
-git add README.md
+[[ $OUT_FILE = "README.md" ]] && git add README.md

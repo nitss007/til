@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+./compile /tmp/til-pre-commit-check.md
+
+[[ $(diff README.md /tmp/til-pre-commit-check.md | wc -l) -eq 4 ]]  || exit 1

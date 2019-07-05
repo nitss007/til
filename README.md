@@ -1,7 +1,6 @@
-# *T*oday *I* *L*earned 🤯
+# **T**oday **I** **L**earned 🤯
 
-(For usage refer to [USAGE.md](USAGE.md))
-
+*(For usage refer to [USAGE.md](USAGE.md))*
 
 ## Multi-Project with Gradle
 
@@ -95,21 +94,20 @@ while inotifywait -r src; do make; done
 
 ## Magic Variables in Bash
 
-### `$0` - `$99`
-x-th argument provided to the script/function. `$0` is always the script name even when accessed from within a function. `$1+` will work in functions.
+ - `$0` - `$99`
+    x-th argument provided to the script/function. `$0` is always the script name even when accessed from within a function. `$1+` will work in functions.
 
-### `$?`
-Exit code of the last process.
+ - `$?`
+    Exit code of the last process.
 
-### `$_`
-Last argument.
+ - `$_`
+    Last argument.
 
-### `$!`
-PID of last process.
+ - `$!`
+    PID of last process.
 
-### `$@`
-All arguments.
-
+ - `$@`
+    All arguments.
 ## Test for Symlinks in Bash
 
 Use `-L` instead of `-h` for compatibility.
@@ -123,4 +121,4 @@ fi
 ```
 
 
-Generate on Fr 5. Jul 17:05:42 CEST 2019
+Generated on Fr 5. Jul 17:23:06 CEST 2019
