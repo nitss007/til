@@ -6,7 +6,7 @@ set -o nounset
 
 OUT_FILE="${1:-README.md}"
 
-echo "# **T**oday **I** **L**earned 🤯
+echo "# [**T**oday **I** **L**earned](https://mihaeu.github.io/til) 🤯
 
 *(For usage refer to [USAGE.md](USAGE.md))*
 " > "${OUT_FILE}"

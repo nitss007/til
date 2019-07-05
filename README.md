@@ -1,4 +1,4 @@
-# **T**oday **I** **L**earned 🤯
+# [**T**oday **I** **L**earned](https://mihaeu.github.io/til) 🤯
 
 *(For usage refer to [USAGE.md](USAGE.md))*
 
@@ -108,6 +108,7 @@ while inotifywait -r src; do make; done
 
  - `$@`
     All arguments.
+
 ## Test for Symlinks in Bash
 
 Use `-L` instead of `-h` for compatibility.
@@ -121,4 +122,4 @@ fi
 ```
 
 
-Generated on Fr 5. Jul 17:23:06 CEST 2019
+Generated on Fr 5. Jul 17:44:33 CEST 2019
