@@ -122,5 +122,11 @@ else
 fi  
 ```
 
+## Bash Arrays
 
-Generated on Fr 5. Jul 17:46:53 CEST 2019
+Declare a variable with `ARRAY=(one two three)` and reference it using `echo ${ARRAY[*]}` or `echo ${ARRAY[2]}` for a single element.
+
+Note that brackets are not required in for statements: `for i in 1 2 3; do echo $i; done`
+
+
+Generated on Di 10. Sep 10:46:29 CEST 2019
