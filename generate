@@ -12,7 +12,7 @@ $filename = date('Y-m-d').'_'.str_replace([' ', '`', '*'], ['-', '', ''], strtol
 echo 'Run:' . PHP_EOL . PHP_EOL 
     . 'vi ' . $filename . PHP_EOL . PHP_EOL 
     . 'Then run:' . PHP_EOL . PHP_EOL 
-    . './compile && git commit ' . $filename . ' -m"Add ' . date('Y-m-d') . ' ' . $args . '"' . PHP_EOL . PHP_EOL;
+    . './compile && git commit README.md ' . $filename . ' -m"Add ' . date('Y-m-d') . ' ' . $args . '" && git push' . PHP_EOL . PHP_EOL;
 
 if (file_exists(__DIR__ . '/' . $filename)) {
     echo PHP_EOL . 'File already exists! Not overwriting.' . PHP_EOL;
