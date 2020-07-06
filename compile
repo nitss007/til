@@ -10,7 +10,7 @@ echo "# [**T**oday **I** **L**earned](https://mihaeu.github.io/til) 🤯
 
 *(For usage refer to [USAGE.md](USAGE.md))*
 " > "${OUT_FILE}"
-cat 201* >> "${OUT_FILE}"
+cat 20* >> "${OUT_FILE}"
 echo "
 Generated on $(date)" >> "${OUT_FILE}"
 

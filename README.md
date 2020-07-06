@@ -128,5 +128,18 @@ Declare a variable with `ARRAY=(one two three)` and reference it using `echo ${A
 
 Note that brackets are not required in for statements: `for i in 1 2 3; do echo $i; done`
 
+## Generate content for Postman requests
 
-Generated on Di 10. Sep 10:46:29 CEST 2019
+Postman provides dynamic variables which can be used to generate content for requests e.g.
+
+```json
+{
+    "name": "Test Variant {{$randomInt}}",
+    "id": "{{$guid}}"
+}
+```
+
+See: https://learning.postman.com/docs/postman/variables-and-environments/variables-list/
+
+
+Generated on Mo 6. Jul 10:31:05 CEST 2020
