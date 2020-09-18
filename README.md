@@ -141,5 +141,13 @@ Postman provides dynamic variables which can be used to generate content for req
 
 See: https://learning.postman.com/docs/postman/variables-and-environments/variables-list/
 
+## KDEWallet
 
-Generated on Mo 6. Jul 10:31:05 CEST 2020
+By using `kwalletcli` you can poll for entries using e.g.
+
+```bash
+kwallet-query -l kdewallet -f Toolbox -r 'JetBrains Account OAuth'
+```
+
+
+Generated on Fr 18. Sep 09:49:35 CEST 2020
