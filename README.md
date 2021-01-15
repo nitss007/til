@@ -149,5 +149,43 @@ By using `kwalletcli` you can poll for entries using e.g.
 kwallet-query -l kdewallet -f Toolbox -r 'JetBrains Account OAuth'
 ```
 
+## Use git for-each-ref instead of git branch
 
-Generated on Fr 18. Sep 09:49:35 CEST 2020
+`git for-each-ref` is better suited for automated branch parsing than `git branch`.
+
+Example usage which deletes branches which aren't on upstream:
+
+```bash
+git for-each-ref --shell --format='ref=%(refname:short); gone=%(if:equals=[gone])%(upstream:track)%(then)gone%(end); if [ "gone" = "$gone" ]; then echo "upstream for $ref is gone, will delete."; git branch -D "$ref"; else echo "will not delete $ref."; fi' 'refs/heads/**' | while read cmd; do eval "$cmd"; done
+```
+
+## Jira - Find Tickets you Commented On
+
+```
+issueFunction in commented("by currentUser()")
+```
+
+## Renew an expired PGP key
+
+```bash
+gpg --list-keys 2>/dev/null | grep <your_email> -C2
+gpg --edit-key <the_key_id_you_want>
+
+# interactive prompt starts
+key 0 
+# note you will not see a * next to the key, but unless there
+# is an error the key is selected
+expire
+1y
+key 1
+expire
+1y
+# ... for all keys and subkeys
+save
+
+# publish the change
+gpg --keyserver pgp.mit.edu --send-keys <the_key_id_you_want>
+```
+
+
+Generated on Fr 15. Jan 10:22:03 CET 2021
