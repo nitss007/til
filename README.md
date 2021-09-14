@@ -187,5 +187,9 @@ save
 gpg --keyserver pgp.mit.edu --send-keys <the_key_id_you_want>
 ```
 
+## Shortcut for KDE Window Settings
 
-Generated on Fr 15. Jan 10:22:03 CET 2021
+KDE special window settings can be accessed even without a titlebar by using the shortcut Alt + F3. From there you can set opacity, window size, borders etc.
+
+
+Generated on Di 14. Sep 11:10:17 CEST 2021
