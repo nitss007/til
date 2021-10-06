@@ -231,5 +231,15 @@ Sensors:   System Temperatures: cpu: 65.5C mobo: N/A
 Info:      Processes: 484 Uptime: 1:53 Memory: 13523.0/32017.9MB Client: Shell (zsh) inxi: 2.3.56
 ```
 
+## Filter JSON array using jq
 
-Generated on Mo 4. Okt 08:34:43 CEST 2021
+If you are trying to find a specific element within a JSON array you can use jq's `select()` filter.
+
+Example:
+
+```bash
+jq '.services[] | select(.name == "awesome-service") | .version' services.json
+```
+
+
+Generated on Mi 6. Okt 14:50:04 CEST 2021
