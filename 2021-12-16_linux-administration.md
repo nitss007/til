@@ -1,5 +1,7 @@
 ## Linux Administration
 
+
+```bash
 cat hello
 #!/bin/bash
 echo "Hello, world"
@@ -13,6 +15,7 @@ for EVEN in $(seq 2 2 10); do echo "$EVEN"; done
 
 test 1 -gt 2 ; echo $?
 
+```
 Tests can be performed using the Bash test command syntax, [ <TESTEXPRESSION> ].
 [[ <TESTEXPRESSION> ]], > Bash version 2.02 and provides features such as glob pattern matching and regex pattern matching
 
