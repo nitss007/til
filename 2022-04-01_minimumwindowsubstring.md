@@ -17,7 +17,7 @@ To really understand this algorithm, please see my code which is much clearer, b
  templated code with optimisation (using array instead of map). The runtime dropped for e.g. in min window from 143ms -> 7ms.
 
 Minimum window
-
+```
   public String minWindow(String s, String t) {
     int [] map = new int[128];
     for (char c : t.toCharArray()) {
@@ -43,8 +43,9 @@ Minimum window
 
     return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
   }
+```
 Longest Substring - at most K distinct characters
-
+```
   public int lengthOfLongestSubstringKDistinct(String s, int k) {
     int[] map = new int[256];
     int start = 0, end = 0, maxLen = Integer.MIN_VALUE, counter = 0;
@@ -67,8 +68,9 @@ Longest Substring - at most K distinct characters
 
     return maxLen;
   }
+```
 Longest Substring - at most 2 distinct characters
-
+```
 public int lengthOfLongestSubstringTwoDistinct(String s) {
     int[] map = new int[128];
     int start = 0, end = 0, maxLen = 0, counter = 0;
@@ -91,8 +93,9 @@ public int lengthOfLongestSubstringTwoDistinct(String s) {
 
     return maxLen;
   }
+```
 LongestSubstring - without repeating characters
-
+```
   public int lengthOfLongestSubstring2(String s) {
     int[] map = new int[128];
     int start = 0, end = 0, maxLen = 0, counter = 0;
@@ -115,4 +118,4 @@ LongestSubstring - without repeating characters
 
     return maxLen;
   }
-
+```
