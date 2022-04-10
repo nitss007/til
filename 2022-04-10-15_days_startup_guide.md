@@ -14,3 +14,11 @@
 - SEO on Ahrefs - 5 hours
 - Landing page chatbot on Landbot - 1 hour
 - CRM on HubSpot - 1 hour
+
+The plan is simple.
+
+1. Build a landing page with reusable assets
+2. Get featured on major sites
+3. Newsletter + SEO + chatbot to get customers in
+4. Backend management system to manage inbound customers
+
