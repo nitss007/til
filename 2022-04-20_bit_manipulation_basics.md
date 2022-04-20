@@ -21,8 +21,8 @@ There is no boolean operator counterpart to bitwise exclusive-or, but there is a
 
 
 
-1. Examples
-Count the number of ones in the binary representation of the given number
+Examples
+1. Count the number of ones in the binary representation of the given number
 
 ```
 int count_one(int n) {
