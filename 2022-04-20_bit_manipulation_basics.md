@@ -21,7 +21,7 @@ There is no boolean operator counterpart to bitwise exclusive-or, but there is a
 
 
 
-Examples
+1. Examples
 Count the number of ones in the binary representation of the given number
 
 ```
