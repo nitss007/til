@@ -8,7 +8,7 @@ in case the links are not working, adding few important items below.
 
 There is no boolean operator counterpart to bitwise exclusive-or, but there is a simple explanation. The exclusive-or operation takes two inputs and returns a 1 if either one or the other of the inputs is a 1, but not if both are. That is, if both inputs are 1 or both inputs are 0, it returns 0. Bitwise exclusive-or, with the operator of a caret, ^, performs the exclusive-or operation on each pair of bits. Exclusive-or is commonly abbreviated XOR.
 
--Set union A | B
+- Set union A | B
 - Set intersection A & B
 - Set subtraction A & ~B
 - Set negation ALL_BITS ^ A or ~A
@@ -22,7 +22,7 @@ There is no boolean operator counterpart to bitwise exclusive-or, but there is a
 
 
 Examples
-1. Count the number of ones in the binary representation of the given number
+1 Count the number of ones in the binary representation of the given number
 
 ```
 int count_one(int n) {
@@ -36,7 +36,7 @@ int count_one(int n) {
 ```
 
 
-2. Is power of four
+2 Is power of four
 
 ```
 bool isPowerOfFour(int n) {
@@ -46,7 +46,7 @@ bool isPowerOfFour(int n) {
 
 ```
 
-3. Sum of Two Integers
+3 Sum of Two Integers
 
 ```
 
