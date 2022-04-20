@@ -22,7 +22,7 @@ There is no boolean operator counterpart to bitwise exclusive-or, but there is a
 
 
 Examples
-1 Count the number of ones in the binary representation of the given number
+1. Count the number of ones in the binary representation of the given number
 
 ```
 int count_one(int n) {
@@ -36,7 +36,7 @@ int count_one(int n) {
 ```
 
 
-2 Is power of four
+2. Is power of four
 
 ```
 bool isPowerOfFour(int n) {
@@ -46,7 +46,7 @@ bool isPowerOfFour(int n) {
 
 ```
 
-3 Sum of Two Integers
+3. Sum of Two Integers
 
 ```
 
