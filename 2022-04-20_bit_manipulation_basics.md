@@ -37,6 +37,7 @@ int count_one(int n) {
 
 
 2. Is power of four
+
 ```
 bool isPowerOfFour(int n) {
     return !(n&(n-1)) && (n&0x55555555);  // check if it is power of 2 and 
@@ -58,6 +59,7 @@ int getSum(int a, int b) {
 4.
 Missing Number
 Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array. For example, Given nums = [0, 1, 3] return 2. (Of course, you can do this by math.)
+
 ```
 int missingNumber(vector<int>& nums) {
     int ret = 0;
@@ -72,6 +74,7 @@ int missingNumber(vector<int>& nums) {
 5.
 Find the largest power of 2 (most significant bit in binary form), which is less than or equal to the given number N.
 
+```
 long largest_power(long N) {
     //changing all right side bits to 1.
     N = N | (N>>1);
@@ -81,12 +84,14 @@ long largest_power(long N) {
     N = N | (N>>16);
     return (N+1)>>1;
 }
+```
 
 6.
 Reverse Bits
 Reverse bits of a given 32 bits unsigned integer.
 
 Solution
+
 ```
 uint32_t reverseBits(uint32_t n) {
     unsigned int mask = 1<<31, res = 0;
@@ -98,7 +103,9 @@ uint32_t reverseBits(uint32_t n) {
     return res;
 }
 ```
+
 Another left endian approach
+
 ```
 uint32_t reverseBits(uint32_t n) {
 	uint32_t mask = 1, ret = 0;
@@ -110,6 +117,7 @@ uint32_t reverseBits(uint32_t n) {
 	return ret;
 }
 ```
+
 Another alternative
 Just selecting certain bits
 
@@ -157,6 +165,7 @@ Get all 1-bits ~0
 Examples
 Count the number of ones in the binary representation of the given number
 
+```
 int count_one(int n) {
     while(n) {
         n = n&(n-1);
@@ -164,24 +173,33 @@ int count_one(int n) {
     }
     return count;
 }
+```
+
 Is power of four (actually map-checking, iterative and recursive methods can do the same)
 
+```
 bool isPowerOfFour(int n) {
     return !(n&(n-1)) && (n&0x55555555);
     //check the 1-bit location;
 }
+```
+
 ^ tricks
 Use ^ to remove even exactly same numbers and save the odd, or save the distinct bits and remove the same.
 
 Sum of Two Integers
 Use ^ and & to add two integers
 
+```
 int getSum(int a, int b) {
     return b==0? a:getSum(a^b, (a&b)<<1); //be careful about the terminating condition;
 }
+```
+
 Missing Number
 Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array. For example, Given nums = [0, 1, 3] return 2. (Of course, you can do this by math.)
 
+```
 int missingNumber(vector<int>& nums) {
     int ret = 0;
     for(int i = 0; i < nums.size(); ++i) {
@@ -190,11 +208,14 @@ int missingNumber(vector<int>& nums) {
     }
     return ret^=nums.size();
 }
+```
+
 | tricks
 Keep as many 1-bits as possible
 
 Find the largest power of 2 (most significant bit in binary form), which is less than or equal to the given number N.
 
+```
 long largest_power(long N) {
     //changing all right side bits to 1.
     N = N | (N>>1);
@@ -204,9 +225,12 @@ long largest_power(long N) {
     N = N | (N>>16);
     return (N+1)>>1;
 }
+```
+
 Reverse Bits
 Reverse bits of a given 32 bits unsigned integer.
 
+```
 Solution
 uint32_t reverseBits(uint32_t n) {
     unsigned int mask = 1<<31, res = 0;
@@ -226,16 +250,21 @@ uint32_t reverseBits(uint32_t n) {
 	}
 	return ret;
 }
+```
+
 & tricks
 Just selecting certain bits
 
 Reversing the bits in integer
 
+```
 x = ((x & 0xaaaaaaaa) >> 1) | ((x & 0x55555555) << 1);
 x = ((x & 0xcccccccc) >> 2) | ((x & 0x33333333) << 2);
 x = ((x & 0xf0f0f0f0) >> 4) | ((x & 0x0f0f0f0f) << 4);
 x = ((x & 0xff00ff00) >> 8) | ((x & 0x00ff00ff) << 8);
 x = ((x & 0xffff0000) >> 16) | ((x & 0x0000ffff) << 16);
+```
+
 Bitwise AND of Numbers Range
 Given a range [m, n] where 0 <= m <= n <= 2147483647, return the bitwise AND of all numbers in this range, inclusive. For example, given the range [5, 7], you should return 4.
 
