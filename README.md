@@ -1737,12 +1737,194 @@ public class NWays2SelectBuilding {
 	}
 }
 ```
+15 day tech startup launch plan:
+- Domain on GoDaddy - 5 minutes
+- Logo ideas on Dribbble - 5 minutes
+- Brand assets on Figma - 40 minutes
+- Website template design on Wix.com - 2 hours
+- Webpage on Webflow - 2 hours
+- Website to backend workflow on Zapier and Notion - 2 hours
+- Early user testimonial videos on Testimonial - 30 minutes
+- Early app building on FlutterFlow - 7 days
+- Step by step instructions on using app on UserGuiding - 2 hours
+- Payment collection on Stripe or Bolt - 2 hours
+- App distribution on ProductHunt - 5 hours
+- Newsletter plan on Substack- 7 days
+- SEO on Ahrefs - 5 hours
+- Landing page chatbot on Landbot - 1 hour
+- CRM on HubSpot - 1 hour
+
+The plan is simple.
+
+1. Build a landing page with reusable assets
+2. Get featured on major sites
+3. Newsletter + SEO + chatbot to get customers in
+4. Backend management system to manage inbound customers
+
+A general approach to backtracking questions in Java (Subsets, Permutations, Combination Sum, Palindrome Partioning)
+
+This structure might apply to many other backtracking questions, but here I am just going to demonstrate Subsets, Permutations, and Combination Sum.
+
+Subsets : https://leetcode.com/problems/subsets/
+```
+public List<List<Integer>> subsets(int[] nums) {
+    List<List<Integer>> list = new ArrayList<>();
+    Arrays.sort(nums);
+    backtrack(list, new ArrayList<>(), nums, 0);
+    return list;
+}
+
+private void backtrack(List<List<Integer>> list , List<Integer> tempList, int [] nums, int start){
+    list.add(new ArrayList<>(tempList));
+    for(int i = start; i < nums.length; i++){
+        tempList.add(nums[i]);
+        backtrack(list, tempList, nums, i + 1);
+        tempList.remove(tempList.size() - 1);
+    }
+}
+Subsets II (contains duplicates) : https://leetcode.com/problems/subsets-ii/
+
+public List<List<Integer>> subsetsWithDup(int[] nums) {
+    List<List<Integer>> list = new ArrayList<>();
+    Arrays.sort(nums);
+    backtrack(list, new ArrayList<>(), nums, 0);
+    return list;
+}
+
+private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
+    list.add(new ArrayList<>(tempList));
+    for(int i = start; i < nums.length; i++){
+        if(i > start && nums[i] == nums[i-1]) continue; // skip duplicates
+        tempList.add(nums[i]);
+        backtrack(list, tempList, nums, i + 1);
+        tempList.remove(tempList.size() - 1);
+    }
+} 
+Permutations : https://leetcode.com/problems/permutations/
+
+public List<List<Integer>> permute(int[] nums) {
+   List<List<Integer>> list = new ArrayList<>();
+   // Arrays.sort(nums); // not necessary
+   backtrack(list, new ArrayList<>(), nums);
+   return list;
+}
+
+private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums){
+   if(tempList.size() == nums.length){
+      list.add(new ArrayList<>(tempList));
+   } else{
+      for(int i = 0; i < nums.length; i++){ 
+         if(tempList.contains(nums[i])) continue; // element already exists, skip
+         tempList.add(nums[i]);
+         backtrack(list, tempList, nums);
+         tempList.remove(tempList.size() - 1);
+      }
+   }
+} 
+Permutations II (contains duplicates) : https://leetcode.com/problems/permutations-ii/
+
+public List<List<Integer>> permuteUnique(int[] nums) {
+    List<List<Integer>> list = new ArrayList<>();
+    Arrays.sort(nums);
+    backtrack(list, new ArrayList<>(), nums, new boolean[nums.length]);
+    return list;
+}
+
+private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, boolean [] used){
+    if(tempList.size() == nums.length){
+        list.add(new ArrayList<>(tempList));
+    } else{
+        for(int i = 0; i < nums.length; i++){
+            if(used[i] || i > 0 && nums[i] == nums[i-1] && !used[i - 1]) continue;
+            used[i] = true; 
+            tempList.add(nums[i]);
+            backtrack(list, tempList, nums, used);
+            used[i] = false; 
+            tempList.remove(tempList.size() - 1);
+        }
+    }
+}
+Combination Sum : https://leetcode.com/problems/combination-sum/
+
+public List<List<Integer>> combinationSum(int[] nums, int target) {
+    List<List<Integer>> list = new ArrayList<>();
+    Arrays.sort(nums);
+    backtrack(list, new ArrayList<>(), nums, target, 0);
+    return list;
+}
+
+private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int remain, int start){
+    if(remain < 0) return;
+    else if(remain == 0) list.add(new ArrayList<>(tempList));
+    else{ 
+        for(int i = start; i < nums.length; i++){
+            tempList.add(nums[i]);
+            backtrack(list, tempList, nums, remain - nums[i], i); // not i + 1 because we can reuse same elements
+            tempList.remove(tempList.size() - 1);
+        }
+    }
+}
+Combination Sum II (can't reuse same element) : https://leetcode.com/problems/combination-sum-ii/
+
+public List<List<Integer>> combinationSum2(int[] nums, int target) {
+    List<List<Integer>> list = new ArrayList<>();
+    Arrays.sort(nums);
+    backtrack(list, new ArrayList<>(), nums, target, 0);
+    return list;
+    
+}
+
+private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int remain, int start){
+    if(remain < 0) return;
+    else if(remain == 0) list.add(new ArrayList<>(tempList));
+    else{
+        for(int i = start; i < nums.length; i++){
+            if(i > start && nums[i] == nums[i-1]) continue; // skip duplicates
+            tempList.add(nums[i]);
+            backtrack(list, tempList, nums, remain - nums[i], i + 1);
+            tempList.remove(tempList.size() - 1); 
+        }
+    }
+} 
+Palindrome Partitioning : https://leetcode.com/problems/palindrome-partitioning/
+
+public List<List<String>> partition(String s) {
+   List<List<String>> list = new ArrayList<>();
+   backtrack(list, new ArrayList<>(), s, 0);
+   return list;
+}
+
+public void backtrack(List<List<String>> list, List<String> tempList, String s, int start){
+   if(start == s.length())
+      list.add(new ArrayList<>(tempList));
+   else{
+      for(int i = start; i < s.length(); i++){
+         if(isPalindrome(s, start, i)){
+            tempList.add(s.substring(start, i + 1));
+            backtrack(list, tempList, s, i + 1);
+            tempList.remove(tempList.size() - 1);
+         }
+      }
+   }
+}
+
+public boolean isPalindrome(String s, int low, int high){
+   while(low < high)
+      if(s.charAt(low++) != s.charAt(high--)) return false;
+   return true;
+} 
+```
 ## bit_manipulation_basics
 
+links to check : 
+http://graphics.stanford.edu/~seander/bithacks.html
+https://leetcode.com/problems/sum-of-two-integers/discuss/84278/A-summary%3A-how-to-use-bit-manipulation-to-solve-problems-easily-and-efficiently
+
+in case the links are not working, adding few important items below.
 
 There is no boolean operator counterpart to bitwise exclusive-or, but there is a simple explanation. The exclusive-or operation takes two inputs and returns a 1 if either one or the other of the inputs is a 1, but not if both are. That is, if both inputs are 1 or both inputs are 0, it returns 0. Bitwise exclusive-or, with the operator of a caret, ^, performs the exclusive-or operation on each pair of bits. Exclusive-or is commonly abbreviated XOR.
 
--Set union A | B
+- Set union A | B
 - Set intersection A & B
 - Set subtraction A & ~B
 - Set negation ALL_BITS ^ A or ~A
@@ -1752,6 +1934,444 @@ There is no boolean operator counterpart to bitwise exclusive-or, but there is a
 - Extract last bit A&-A or A&~(A-1) or x^(x&(x-1))
 - Remove last bit A&(A-1)
 - Get all 1-bits ~0
+
+
+
+Examples
+1. Count the number of ones in the binary representation of the given number
+
+```
+int count_one(int n) {
+    while(n) {
+        n = n&(n-1);
+        count++;
+    }
+    return count;
+}
+
+```
+
+
+2. Is power of four
+
+```
+bool isPowerOfFour(int n) {
+    return !(n&(n-1)) && (n&0x55555555);  // check if it is power of 2 and 
+    //check the 1-bit location;          // and & with 10101010101..101 -> power of 4
+}
+
+```
+
+3. Sum of Two Integers
+
+```
+
+int getSum(int a, int b) {
+	return b==0?a:getSum(a^b,(a&b)<<1);
+
+}
+```
+
+4.
+Missing Number
+Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array. For example, Given nums = [0, 1, 3] return 2. (Of course, you can do this by math.)
+
+```
+int missingNumber(vector<int>& nums) {
+    int ret = 0;
+    for(int i = 0; i < nums.size(); ++i) {
+        ret ^= i;
+        ret ^= nums[i];
+    }
+    return ret^=nums.size();
+}
+```
+
+5.
+Find the largest power of 2 (most significant bit in binary form), which is less than or equal to the given number N.
+
+```
+long largest_power(long N) {
+    //changing all right side bits to 1.
+    N = N | (N>>1);
+    N = N | (N>>2);
+    N = N | (N>>4);
+    N = N | (N>>8);
+    N = N | (N>>16);
+    return (N+1)>>1;
+}
+```
+
+6.
+Reverse Bits
+Reverse bits of a given 32 bits unsigned integer.
+
+Solution
+
+```
+uint32_t reverseBits(uint32_t n) {
+    unsigned int mask = 1<<31, res = 0;
+    for(int i = 0; i < 32; ++i) {
+        if(n & 1) res |= mask;
+        mask >>= 1;
+        n >>= 1;
+    }
+    return res;
+}
+```
+
+Another left endian approach
+
+```
+uint32_t reverseBits(uint32_t n) {
+	uint32_t mask = 1, ret = 0;
+	for(int i = 0; i < 32; ++i){
+		ret <<= 1;
+		if(mask & n) ret |= 1;
+		mask <<= 1;
+	}
+	return ret;
+}
+```
+
+Another alternative
+Just selecting certain bits
+
+Reversing the bits in integer
+
+```
+x = ((x & 0xaaaaaaaa) >> 1) | ((x & 0x55555555) << 1);
+x = ((x & 0xcccccccc) >> 2) | ((x & 0x33333333) << 2);
+x = ((x & 0xf0f0f0f0) >> 4) | ((x & 0x0f0f0f0f) << 4);
+x = ((x & 0xff00ff00) >> 8) | ((x & 0x00ff00ff) << 8);
+x = ((x & 0xffff0000) >> 16) | ((x & 0x0000ffff) << 16);
+```
+
+
+7.
+
+LHearen's avatar
+LHearen
+6492
+Last Edit: October 26, 2018 12:21 PM
+
+243.4K VIEWS
+
+Wiki
+Bit manipulation is the act of algorithmically manipulating bits or other pieces of data shorter than a word. Computer programming tasks that require bit manipulation include low-level device control, error detection and correction algorithms, data compression, encryption algorithms, and optimization. For most other tasks, modern programming languages allow the programmer to work directly with abstractions instead of bits that represent those abstractions. Source code that does bit manipulation makes use of the bitwise operations: AND, OR, XOR, NOT, and bit shifts.
+
+Bit manipulation, in some cases, can obviate or reduce the need to loop over a data structure and can give many-fold speed ups, as bit manipulations are processed in parallel, but the code can become more difficult to write and maintain.
+
+Details
+Basics
+At the heart of bit manipulation are the bit-wise operators & (and), | (or), ~ (not) and ^ (exclusive-or, xor) and shift operators a << b and a >> b.
+
+There is no boolean operator counterpart to bitwise exclusive-or, but there is a simple explanation. The exclusive-or operation takes two inputs and returns a 1 if either one or the other of the inputs is a 1, but not if both are. That is, if both inputs are 1 or both inputs are 0, it returns 0. Bitwise exclusive-or, with the operator of a caret, ^, performs the exclusive-or operation on each pair of bits. Exclusive-or is commonly abbreviated XOR.
+
+Set union A | B
+Set intersection A & B
+Set subtraction A & ~B
+Set negation ALL_BITS ^ A or ~A
+Set bit A |= 1 << bit
+Clear bit A &= ~(1 << bit)
+Test bit (A & 1 << bit) != 0
+Extract last bit A&-A or A&~(A-1) or x^(x&(x-1))
+Remove last bit A&(A-1)
+Get all 1-bits ~0
+Examples
+Count the number of ones in the binary representation of the given number
+
+```
+int count_one(int n) {
+    while(n) {
+        n = n&(n-1);
+        count++;
+    }
+    return count;
+}
+```
+
+Is power of four (actually map-checking, iterative and recursive methods can do the same)
+
+```
+bool isPowerOfFour(int n) {
+    return !(n&(n-1)) && (n&0x55555555);
+    //check the 1-bit location;
+}
+```
+
+^ tricks
+Use ^ to remove even exactly same numbers and save the odd, or save the distinct bits and remove the same.
+
+Sum of Two Integers
+Use ^ and & to add two integers
+
+```
+int getSum(int a, int b) {
+    return b==0? a:getSum(a^b, (a&b)<<1); //be careful about the terminating condition;
+}
+```
+
+Missing Number
+Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array. For example, Given nums = [0, 1, 3] return 2. (Of course, you can do this by math.)
+
+```
+int missingNumber(vector<int>& nums) {
+    int ret = 0;
+    for(int i = 0; i < nums.size(); ++i) {
+        ret ^= i;
+        ret ^= nums[i];
+    }
+    return ret^=nums.size();
+}
+```
+
+| tricks
+Keep as many 1-bits as possible
+
+Find the largest power of 2 (most significant bit in binary form), which is less than or equal to the given number N.
+
+```
+long largest_power(long N) {
+    //changing all right side bits to 1.
+    N = N | (N>>1);
+    N = N | (N>>2);
+    N = N | (N>>4);
+    N = N | (N>>8);
+    N = N | (N>>16);
+    return (N+1)>>1;
+}
+```
+
+Reverse Bits
+Reverse bits of a given 32 bits unsigned integer.
+
+```
+Solution
+uint32_t reverseBits(uint32_t n) {
+    unsigned int mask = 1<<31, res = 0;
+    for(int i = 0; i < 32; ++i) {
+        if(n & 1) res |= mask;
+        mask >>= 1;
+        n >>= 1;
+    }
+    return res;
+}
+uint32_t reverseBits(uint32_t n) {
+	uint32_t mask = 1, ret = 0;
+	for(int i = 0; i < 32; ++i){
+		ret <<= 1;
+		if(mask & n) ret |= 1;
+		mask <<= 1;
+	}
+	return ret;
+}
+```
+
+& tricks
+Just selecting certain bits
+
+Reversing the bits in integer
+
+```
+x = ((x & 0xaaaaaaaa) >> 1) | ((x & 0x55555555) << 1);
+x = ((x & 0xcccccccc) >> 2) | ((x & 0x33333333) << 2);
+x = ((x & 0xf0f0f0f0) >> 4) | ((x & 0x0f0f0f0f) << 4);
+x = ((x & 0xff00ff00) >> 8) | ((x & 0x00ff00ff) << 8);
+x = ((x & 0xffff0000) >> 16) | ((x & 0x0000ffff) << 16);
+```
+
+Bitwise AND of Numbers Range
+Given a range [m, n] where 0 <= m <= n <= 2147483647, return the bitwise AND of all numbers in this range, inclusive. For example, given the range [5, 7], you should return 4.
+
+Solution
+```
+int rangeBitwiseAnd(int m, int n) {
+    int a = 0;
+    while(m != n) {
+        m >>= 1;
+        n >>= 1;
+        a++;
+    }
+    return m<<a; 
+}
+```
+8.
+Number of 1 Bits
+Write a function that takes an unsigned integer and returns the number of ’1' bits it has (also known as the Hamming weight).
+
+Solution
+```
+int hammingWeight(uint32_t n) {
+	int count = 0;
+	while(n) {
+		n = n&(n-1);
+		count++;
+	}
+	return count;
+}
+int hammingWeight(uint32_t n) {
+    ulong mask = 1;
+    int count = 0;
+    for(int i = 0; i < 32; ++i){ //31 will not do, delicate;
+        if(mask & n) count++;
+        mask <<= 1;
+    }
+    return count;
+}
+```
+
+
+Applications
+```
+Application
+Repeated DNA Sequences
+All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: "ACGAATTCCG". When studying DNA, it is sometimes useful to identify repeated sequences within the DNA. Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.
+For example,
+Given s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT",
+Return: ["AAAAACCCCC", "CCCCCAAAAA"].
+
+Solution
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        int sLen = s.length();
+        vector<string> v;
+        if(sLen < 11) return v;
+        char keyMap[1<<21]{0};
+        int hashKey = 0;
+        for(int i = 0; i < 9; ++i) hashKey = (hashKey<<2) | (s[i]-'A'+1)%5;
+        for(int i = 9; i < sLen; ++i) {
+            if(keyMap[hashKey = ((hashKey<<2)|(s[i]-'A'+1)%5)&0xfffff]++ == 1)
+                v.push_back(s.substr(i-9, 10));
+        }
+        return v;
+    }
+};
+But the above solution can be invalid when repeated sequence appears too many times, in which case we should use unordered_map<int, int> keyMap to replace char keyMap[1<<21]{0}here.
+
+Majority Element
+Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times. (bit-counting as a usual way, but here we actually also can adopt sorting and Moore Voting Algorithm)
+
+Solution
+int majorityElement(vector<int>& nums) {
+    int len = sizeof(int)*8, size = nums.size();
+    int count = 0, mask = 1, ret = 0;
+    for(int i = 0; i < len; ++i) {
+        count = 0;
+        for(int j = 0; j < size; ++j)
+            if(mask & nums[j]) count++;
+        if(count > size/2) ret |= mask;
+        mask <<= 1;
+    }
+    return ret;
+}
+Single Number III
+Given an array of integers, every element appears three times except for one. Find that single one. (Still this type can be solved by bit-counting easily.) But we are going to solve it by digital logic design
+
+Solution
+//inspired by logical circuit design and boolean algebra;
+//counter - unit of 3;
+//current   incoming  next
+//a b            c    a b
+//0 0            0    0 0
+//0 1            0    0 1
+//1 0            0    1 0
+//0 0            1    0 1
+//0 1            1    1 0
+//1 0            1    0 0
+//a = a&~b&~c + ~a&b&c;
+//b = ~a&b&~c + ~a&~b&c;
+//return a|b since the single number can appear once or twice;
+int singleNumber(vector<int>& nums) {
+    int t = 0, a = 0, b = 0;
+    for(int i = 0; i < nums.size(); ++i) {
+        t = (a&~b&~nums[i]) | (~a&b&nums[i]);
+        b = (~a&b&~nums[i]) | (~a&~b&nums[i]);
+        a = t;
+    }
+    return a | b;
+}
+;
+Maximum Product of Word Lengths
+Given a string array words, find the maximum value of length(word[i]) * length(word[j]) where the two words do not share common letters. You may assume that each word will contain only lower case letters. If no such two words exist, return 0.
+
+Example 1:
+Given ["abcw", "baz", "foo", "bar", "xtfn", "abcdef"]
+Return 16
+The two words can be "abcw", "xtfn".
+
+Example 2:
+Given ["a", "ab", "abc", "d", "cd", "bcd", "abcd"]
+Return 4
+The two words can be "ab", "cd".
+
+Example 3:
+Given ["a", "aa", "aaa", "aaaa"]
+Return 0
+No such pair of words.
+
+Solution
+Since we are going to use the length of the word very frequently and we are to compare the letters of two words checking whether they have some letters in common:
+
+using an array of int to pre-store the length of each word reducing the frequently measuring process;
+since int has 4 bytes, a 32-bit type, and there are only 26 different letters, so we can just use one bit to indicate the existence of the letter in a word.
+int maxProduct(vector<string>& words) {
+    vector<int> mask(words.size());
+    vector<int> lens(words.size());
+    for(int i = 0; i < words.size(); ++i) lens[i] = words[i].length();
+    int result = 0;
+    for (int i=0; i<words.size(); ++i) {
+        for (char c : words[i])
+            mask[i] |= 1 << (c - 'a');
+        for (int j=0; j<i; ++j)
+            if (!(mask[i] & mask[j]))
+                result = max(result, lens[i]*lens[j]);
+    }
+    return result;
+}
+Attention
+result after shifting left(or right) too much is undefined
+right shifting operations on negative values are undefined
+right operand in shifting should be non-negative, otherwise the result is undefined
+The & and | operators have lower precedence than comparison operators
+Sets
+All the subsets
+A big advantage of bit manipulation is that it is trivial to iterate over all the subsets of an N-element set: every N-bit value represents some subset. Even better, if A is a subset of B then the number representing A is less than that representing B, which is convenient for some dynamic programming solutions.
+
+It is also possible to iterate over all the subsets of a particular subset (represented by a bit pattern), provided that you don’t mind visiting them in reverse order (if this is problematic, put them in a list as they’re generated, then walk the list backwards). The trick is similar to that for finding the lowest bit in a number. If we subtract 1 from a subset, then the lowest set element is cleared, and every lower element is set. However, we only want to set those lower elements that are in the superset. So the iteration step is just i = (i - 1) & superset.
+
+vector<vector<int>> subsets(vector<int>& nums) {
+    vector<vector<int>> vv;
+    int size = nums.size(); 
+    if(size == 0) return vv;
+    int num = 1 << size;
+    vv.resize(num);
+    for(int i = 0; i < num; ++i) {
+        for(int j = 0; j < size; ++j)
+            if((1<<j) & i) vv[i].push_back(nums[j]);   
+    }
+    return vv;
+}
+Actually there are two more methods to handle this using recursion and iteration respectively.
+
+Bitset
+A bitset stores bits (elements with only two possible values: 0 or 1, true or false, ...).
+The class emulates an array of bool elements, but optimized for space allocation: generally, each element occupies only one bit (which, on most systems, is eight times less than the smallest elemental type: char).
+
+// bitset::count
+#include <iostream>       // std::cout
+#include <string>         // std::string
+#include <bitset>         // std::bitset
+
+int main () {
+  std::bitset<8> foo (std::string("10110011"));
+  std::cout << foo << " has ";
+  std::cout << foo.count() << " ones and ";
+  std::cout << (foo.size()-foo.count()) << " zeros.\n";
+  return 0;
+}
+```
 
 problem : Without using airthmatic add two numbers
 
@@ -1844,5 +2464,187 @@ public class DivideOverFlow {
 
 
 
+## System_Design
 
-Generated on Wed Apr 20 01:06:21 PM IST 2022
+
+
+𝟭)𝗕𝗟𝗢𝗢𝗠 𝗙𝗜𝗟𝗧𝗘𝗥
+It is a data structure designed to tell you, rapidly and memory-efficiently, whether an element is present in a set.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚: Build a Web crawler
+
+𝟮)𝗙𝗥𝗨𝗚𝗔𝗟 𝗦𝗧𝗥𝗘𝗔𝗠𝗜𝗡𝗚
+It uses only one unit of memory per group to compute a quantile for each group.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚: Find the nth percentile of the data stream.
+
+𝟯)𝗚𝗘𝗢𝗛𝗔𝗦𝗛/ 𝗦𝟮 𝗚𝗘𝗢𝗠𝗘𝗧𝗥𝗬
+A collection of efficient yet exact mathematical predicates for testing relationships among geometric primitives.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚:Location-based search results with DynamoDb and Geohash.
+
+𝟰)𝗛𝗬𝗣𝗘𝗥𝗟𝗢𝗚𝗟𝗢𝗚
+It is an algorithm for the count-distinct problem, approximating the number of distinct elements in a multiset.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚: privacy-preserving traffic heat map for the city.
+
+𝟱)𝗟𝗘𝗔𝗞𝗬 𝗕𝗨𝗖𝗞𝗘𝗧/ 𝗧𝗢𝗞𝗘𝗡 𝗕𝗨𝗖𝗞𝗘𝗧
+A mechanism to control the amount and the rate of the traffic sent to the network.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚: Design a scalable rate-limiting algorithm.
+
+𝟲)𝗟𝗢𝗦𝗦𝗬 𝗖𝗢𝗨𝗡𝗧
+It is used to identify elements in a data stream whose frequency count exceeds a user-given threshold.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚: Frequency count over the data streams.
+
+𝟳)𝗢𝗣𝗘𝗥𝗔𝗧𝗜𝗢𝗡𝗔𝗟 𝗧𝗥𝗔𝗡𝗦𝗙𝗢𝗥𝗠𝗔𝗧𝗜𝗢𝗡
+It is used for supporting a range of collaboration functionalities in advanced collaborative software systems.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚: Handling editing collision in Google docs.
+
+𝟴)𝗤𝗨𝗔𝗗𝗧𝗥𝗘𝗘/ 𝗥𝗧𝗥𝗘𝗘
+It is a two-dimensional analog of octrees and is most often used to partition a two-dimensional space by recursively subdividing it into four quadrants or regions.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚: find nearby interest points
+
+𝟵)𝗥𝗔𝗬 𝗖𝗔𝗦𝗧𝗜𝗡𝗚
+It is the most basic of many computer graphics rendering algo that uses geometric algo of ray tracing.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚: using longitude and latitude, return the Country of the point.
+
+𝟭𝟬)𝗥𝗘𝗩𝗘𝗥𝗦𝗘 𝗜𝗡𝗗𝗘𝗫
+It is an index of keywords that stores records of documents that contain keywords in the list.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚: Create a complete Tweet index.
+
+𝟭𝟭)𝗥𝗦𝗬𝗡𝗖 𝗔𝗟𝗚𝗢𝗥𝗜𝗧𝗛𝗠
+Used for reducing the cost of a file transfer by avoiding the transfer of blocks that are already at the destination.
+𝙐𝙨𝙚 𝙘𝙖𝙨𝙚:: Streaming file Sync
+
+
+ 𝐀𝐋𝐋 𝐒𝐘𝐒𝐓𝐄𝐌 𝐃𝐄𝐒𝐈𝐆𝐍 𝐘𝐎𝐔𝐓𝐔𝐁𝐄 𝐂𝐇𝐀𝐍𝐍𝐄𝐋𝐒 𝐓𝐇𝐀𝐓 𝐇𝐀𝐕𝐄 𝐆𝐑𝐄𝐀𝐓 𝐂𝐎𝐍𝐓𝐄𝐍𝐓.
+
+𝟏)𝐁𝐘𝐓𝐄 𝐁𝐘 𝐁𝐘𝐓𝐄
+https://lnkd.in/dB3GqYCG
+
+𝟐)𝐓𝐄𝐂𝐇 𝐓𝐀𝐊𝐒𝐇𝐈𝐋𝐀
+https://lnkd.in/d8k5jhUj
+
+𝟑)𝐃𝐄𝐅𝐎𝐆 𝐓𝐄𝐂𝐇
+https://lnkd.in/dBavD7dv
+
+𝟒)𝐇𝐔𝐒𝐒𝐄𝐈𝐍 𝐍𝐀𝐒𝐒𝐄𝐑
+https://lnkd.in/d_eMmmGE
+
+𝟓)𝐒𝐘𝐒𝐓𝐄𝐌 𝐃𝐄𝐒𝐈𝐆𝐍 𝐈𝐍𝐓𝐄𝐑𝐕𝐈𝐄𝐖
+https://lnkd.in/dkKDyFUs
+
+𝟔)𝐬𝐮𝐝𝐨𝐂𝐎𝐃𝐄 (by Yogita Sharma )
+https://lnkd.in/djxWJtJ9
+
+𝟕)𝐜𝐨𝐝𝐞𝐊𝐚𝐫𝐥𝐞
+https://lnkd.in/d37-enAN
+
+𝟖)𝐂𝐌𝐔 𝐃𝐀𝐓𝐀𝐁𝐀𝐒𝐄 𝐆𝐑𝐎𝐔𝐏
+https://lnkd.in/dhqHi3nA
+
+𝟗)𝐢𝐧𝐭𝐞𝐫𝐯𝐢𝐞𝐰𝐢𝐧𝐠.𝐢𝐨
+https://lnkd.in/d2eciNxC
+
+10)Gaurav Sen
+https://lnkd.in/dKTWUJhd
+
+𝟏𝟏)𝐄𝐍𝐆𝐈𝐍𝐄𝐄𝐑𝐈𝐍𝐆 𝐖𝐈𝐓𝐇 𝐔𝐓𝐒𝐀𝐕
+https://lnkd.in/d3H4qTHz
+
+𝟏𝟐)𝐌𝐀𝐑𝐓𝐈𝐍 𝐊𝐋𝐄𝐏𝐏𝐌𝐀𝐍𝐍
+https://lnkd.in/dWQbAP9c
+
+𝟏𝟑)𝐄𝐗𝐏𝐎𝐍𝐄𝐍𝐓
+https://lnkd.in/d3WJTDMS
+
+𝟏𝟒)𝐌𝐈𝐓
+https://lnkd.in/dvu5jUWR
+
+𝟏𝟓)𝐓𝐇𝐈𝐍𝐊 𝐒𝐎𝐅𝐓𝐖𝐀𝐑𝐄
+https://lnkd.in/dw_zTT9R
+
+𝟏𝟔)𝐒𝐔𝐂𝐂𝐄𝐒𝐒 𝐈𝐍 𝐓𝐄𝐂𝐇
+https://lnkd.in/dz76hYDc
+
+𝟏𝟕)𝐓𝐄𝐂𝐇 𝐃𝐔𝐌𝐌𝐈𝐄𝐒 𝐍𝐀𝐑𝐄𝐍𝐃𝐑𝐀 𝐋
+https://lnkd.in/dDFd8Wbn
+
+𝟏𝟖)𝐎𝐊𝐓𝐀𝐃𝐄𝐕
+https://lnkd.in/dfTW8tHY 
+## divide-2-nums-overflow
+
+
+```
+/**
+ * https://leetcode.com/problems/divide-two-integers/
+ * 
+ * (a - b >= 0) The entire game is based on understanding the Circle for example
+ * : -2147483648 cannot become positive by Maths.abs() but ..........+2147483648
+ * -1=+2147483647 which is exactly wats happening when we're doing
+ * -2147483648-1=+2147483647.
+ * 
+ * Math.abs(Integer.MIN_VALUE) would cause an overflow and would cause an issue.
+ * Yes, you are right about the first part. It indeed causes an overflow, but
+ * this overflow is quickly countered by the underflow.
+ * 
+ * Math.abs(Integer.MIN_VALUE) is still Integer.MIN_VALUE. Give this a thought.
+ * When you covert it to positive value, it would overflow by one. Adding one to
+ * Integer.MAX_VALUE would lead to Integer.MIN_VALUE;
+ * 
+ * And the critical trick here is you need to use a - b >= 0 as the condition. a
+ * right now is still Integer.MIN_VALUE, b is a positive number larger than 1
+ * (since we handled the case where b is 1 explicitly). Now Integer.MIN_VALUE
+ * minus a positive value would cause underflow, which wraps back to the
+ * Integer.MAX_VALUE.
+ * 
+ * In summary, when dividend is Integer.MIN_VALUE, a is the overflow outcome.
+ * However, it is not a problem, since a-b underflows. The final result a-b is
+ * just the expected result, despite we just had one overflow and underflow.
+ * This a-b >= 0 trick is important. If you change the condition to a >= b,
+ * which is logically equivalent, you will get the wrong output.
+ * 
+ * It's not a bug, it's a feature. :)
+ * 
+ * Calculate complexity for below solution A doubly nested for loop that looks
+ * like the following would have a time complexity of O(n^2):
+ * 
+ * for(int i = 0; i < n; i++){ for(int j = 0; j < i; j++){ //... }
+ * 
+ * }
+ * 
+ * Similarly, the code I'm running is doing the following: Let's say a is 100, b
+ * is 2,4,8,16,32,64, stopping before 100. while( a - (b << 1 << x) >= 0){ x++;
+ * } In our code, b is like the j pointer, a is like the i pointer. Then a is
+ * decremented because of this line a -= b << x; so a would be readjusted to 36
+ * ( 100 - 64 ). b starts again from 2. So b loops from 2,4,8,16,32, stopping
+ * before 36.
+ * 
+ * So you can deduce by analogy the n^2 where n would be dividend. The reason
+ * log comes into this is because we are squaring b at each step. The log is a
+ * logarithm of base 2.
+ * 
+ * @author nisharma
+ *
+ */
+public class DivideOverFlow {
+	public int divide(int dividend, int divisor) {
+		int count = 0;
+		if (dividend == 1 << 31 && divisor == -1)
+			return (1 << 31) - 1;
+		int a = Math.abs(dividend);
+		int b = Math.abs(divisor);
+		int res = 0;
+		for (int x = 31; x >= 0; x--) {
+			if ((a >>> x) - b >= 0) {
+				res += 1 << x;
+				a -= b << x;
+			}
+
+		}
+		return dividend > 0 == divisor > 0 ? res : -res;
+	}
+
+	public static void main(String[] args) {
+		new DivideOverFlow().divide(-2147483648, -1);
+	}
+}
+```
+
+Generated on Tue Apr 26 01:06:58 PM IST 2022
