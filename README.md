@@ -2646,5 +2646,231 @@ public class DivideOverFlow {
 	}
 }
 ```
+## International_Org_Sponser_Visa_India
 
-Generated on Tue Apr 26 01:06:58 PM IST 2022
+
+London
+
+    Google
+    Amazon
+    Apple
+    Meta
+    Bloomberg
+    Spotify
+    SnapChat
+    Yelp
+    Vercel
+    Bulb
+    Mobiquity
+    Expensify
+    Free Now
+    EF Education First
+    Canva
+    Intercom
+    Curve
+    The Lego group
+    Plaid
+    Transferwise
+    Palantir Technologies
+    Algolia
+    Revolut
+    PayFit
+    SumUp
+    Trainline
+    Deliveroo
+    Collibra
+    Hashicorp
+
+Berlin, Germany
+
+    Amazon
+    Zalando
+    Ubisoft
+    Klarna
+    Delivery Hero
+    Adnymics
+    Hive.app
+    N26
+    Signavio
+    Wayfair
+    Free Now
+    Trivago
+    Babbel
+    Personio
+    RapidAPI
+    HelloFresh
+    PayFit
+    SumUp
+    Taxfix
+    Blinkist
+    SoundCloud
+    Pitch
+    Qonto
+    Gorillas
+    Hashicorp
+    Project44
+    TradeRepublic
+
+Amsterdam, Netherlands
+
+    Databricks
+    Optiver
+    Vercel
+    Booking.com
+    Mobiquity
+    Miro
+    Plaid
+    SumUp
+    Gorillas
+    Hashicorp
+
+Dublin
+
+    Microsoft
+    Amazon
+    Vercel
+    Verizon Connect
+    Free Now
+    Intercom
+    Meta
+    SquareSpace
+    DataDog
+
+Luxembourg
+
+    Amazon
+
+Glasgow, Scotland
+
+    JPMC
+
+Warsaw, Poland
+
+    Google
+    Glovo
+
+Zurich, Switzerland
+
+    EF Education First
+
+Italy
+
+    Bending spoons
+
+Paris
+
+    BlaBlaCar
+    Getaround
+    DataDog
+    Deezer
+
+Japan
+
+    Mercari
+    Fastretailing
+
+Singapore
+
+    Bytedance
+    Shopee
+    Grab
+
+Bangkok, Thailand
+
+    Agoda
+
+Toronto
+
+    Capital One
+
+Spain
+
+    Taxfix
+    Blinkist
+
+
+## faq_dynamic_programming
+
+
+```
+Dice Throw Problem: Given n dice each with m faces, numbered from 1 to m, find the number of ways to get sum X. X is the summation of values on each face when all the dice are thrown.
+ https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/
+
+
+Coin Change: You are given n types of coin denominations of values v(1) < v(2) < ... < v(n) (all integers). Assume v(1) = 1, so you can always make change for any amount of money C. Give an algorithm which makes change for an amount of money C with as few coins as possible.
+Coin Change: https://leetcode.com/problems/coin-change/ and https://leetcode.com/problems/coin-change-2/
+
+Counting Boolean Parenthesizations: You are given a boolean expression consisting of a string of the symbols 'true', 'false', 'and', 'or', and 'xor'. Count the number of ways to parenthesize the expression such that it will evaluate to true. For example, there is only 1 way to parenthesize 'true and false xor true' such that it evaluates to true.
+
+Subset Sum Problem: Given a set of non-negative integers, and a value sum, determine if there is a subset of the given set with sum equal to given sum.
+
+Minimum Number of Jumps: Given an array of integers where each element represents the maximum number of steps that can be made forward from that element, find the minimum number of jumps to reach the end of the array (starting from the first element).
+ https://leetcode.com/problems/jump-game-ii/
+
+Two-Person Traversal of a Sequence of Cities: You are given an ordered sequence of n cities, and the distances between every pair of cities. You must partition the cities into two subsequences (not necessarily contiguous) such that person A visits all cities in the first subsequence (in order), person B visits all cities in the second subsequence (in order), and such that the sum of the total distances travelled by A and B is minimized. Assume that person A and person B start initially at the first city in their respective subsequences.
+
+Balanced Partition: You have a set of n integers each in the range 0 ... K. Partition these integers into two subsets such that you minimize |S1 - S2|, where S1 and S2 denote the sums of the elements in each of the two subsets.
+
+https://leetcode.com/problems/partition-equal-subset-sum/
+
+
+Optimal Strategy for a Game: Consider a row of n coins of values v(1) ... v(n), where n is even. We play a game against an opponent by alternating turns. In each turn, a player selects either the first or last coin from the row, removes it from the row permanently, and receives the value of the coin. Determine the maximum possible amount of money we can definitely win if we move first.
+https://leetcode.com/problems/predict-the-winner/
+
+
+Maximum Value Contiguous Subsequence: Given a sequence of n real numbers A(1) ... A(n), determine a contiguous subsequence A(i) ... A(j) for which the sum of elements in the subsequence is maximized.
+https://leetcode.com/problems/maximum-subarray/
+
+
+Edit Distance: Given two text strings A of length n and B of length m, you want to transform A into B with a minimum number of operations of the following types: delete a character from A, insert a character into A, or change some character in A into a new character. The minimal number of such operations required to transform A into B is called the edit distance between A and B.
+ https://leetcode.com/problems/edit-distance/
+
+
+
+
+```
+## Database_Selection
+
+Cache
+Options: Redis, Memcache
+Use: Redis (Redis is an modern version of Memcache). Redis understands data structures like list etc, so performing list append fast in Redis wrt Memcache which sees all values as a blob.
+
+File storage
+Why? To store images, videos, files etc. These are blob storages. DBMS is used when we have to query on the data. But file is something we just serve.
+Options: S3
+
+Text search engine
+Why?
+Netflix: search for a movie
+Amazon: search for a product
+Uber: search for a location
+Options: Elastic Search, Solar (build over lucene)
+Important: They are search engines, not databases. They give availability and redundancy but no guarantee on data, so data may be lost. Store critical data somewhere else.
+
+Fuzzy text search
+Why? User may type wrong spelling. For eg, instead of Airport, may type Ariport.
+Options: Elasticsearch, Solar
+
+Timeseries database
+Why? For metrics
+Options: InfluxDB, OpenTSDB 
+Note: These are kind of RDBMS with some customization. In it, user will write always in append-only mode and wont edit old data. Also, queries will be bulk queries on a time range. So, optimized for that.
+
+Data Warehouse/ Big Data
+Why? Want to store huge data for analytics. Eg for Amazon, which country giving more revenue, which geography has more transactions, which product sold where most etc.
+Options: Hadoop
+Note: This is more for offline processing.
+
+RDBMS
+Why? When information is structured. And when we need ACID guarantees. For eg, in banking, amount debited but not credited, different account balance for different queries etc
+Options: MySQL, PostgreSQL, Oracle
+
+NoSQL (Document DB)
+Why? For Amazon, building catalogue. Catalogue can have different type of items with different attributes. Eg, T-shirt, Washing machine, Refrigerator, Milk, Medicine etc. This can be stored as json in RDBMS but NoSQL DBs are designed to handle such kind of queries in a more optimized manner.
+Options: MongoDB, CouchBase
+
+NoSQL (Columnar DB)
+Why? When data is ever increasing. Eg, Uber drivers keep sending their location data every few minutes. And if drivers keep increasing, data will keep growing exponentially. But queries will be low only on this huge data, like what locations for a given driver id.
+Options: Cassandra, Hbase
+
+Generated on Wed May  4 08:37:33 AM IST 2022
