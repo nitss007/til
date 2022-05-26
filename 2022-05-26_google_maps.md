@@ -1,6 +1,6 @@
 ## google_maps
 
-```
+
 Below content is taken from https://www.codekarle.com/system-design/Google_Maps-system-design.html 
 
 I have kept it here for personal use only, to have access to it, incase original server is down.
@@ -162,4 +162,3 @@ state of Kashmir. How does Google mark the boundaries of the state when Pakistan
  Pakistan claims to be under their territory is marked as Pakistan’s land and the part that is disputed
   between India and china is marked as a dotted line and same for China.
 
-```
