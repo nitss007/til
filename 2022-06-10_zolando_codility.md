@@ -1,2 +1,0 @@
-## zolando_codility
-
