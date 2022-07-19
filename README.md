@@ -2872,5 +2872,637 @@ Options: MongoDB, CouchBase
 NoSQL (Columnar DB)
 Why? When data is ever increasing. Eg, Uber drivers keep sending their location data every few minutes. And if drivers keep increasing, data will keep growing exponentially. But queries will be low only on this huge data, like what locations for a given driver id.
 Options: Cassandra, Hbase
+## google_maps
 
-Generated on Wed May  4 08:37:33 AM IST 2022
+
+Below content is taken from https://www.codekarle.com/system-design/Google_Maps-system-design.html 
+
+I have kept it here for personal use only, to have access to it, incase original server is down.
+
+
+Google maps has surely made life easy for all of us hasn’t it. Whether it is to explore a new city, 
+planning a road trip, find the quickest route to the airport, avoid traffic on the way to office! 
+Just type in your destination and you have the perfect route! Seems so simple!! But all that goes 
+on in the background from typing your destination to getting your route is anything BUT simple. 
+So let's have a look at what does go on behind the scenes. Lets design Google Maps today!
+Functional Requirements
+
+    To be able to identify roads and routes
+    Find distance and ETA while travelling between 2 points
+    Should be a pluggable model in case we want to build up on those good to have requirements
+
+Non Functional Requirements
+
+    High Availability - This system can never be down. We don’t want our users to get lost in the 
+    middle of nowhere.
+    Good Accuracy - The ETA we predict should not deviate too much from the actual time of travel.
+    Responds promptly - The response should be ready within a few seconds.
+    Scalable - A system like google maps receives huge number of requests per second, so it should 
+    be designed in a way that it can handle these requests and any surges in the number of requests.
+
+Challenges while building
+
+    There are millions of roads across the globe. It is a massive data set and not very easily available.
+     Maybe not even very accurate.
+    Some attributes that can effect ETA are very unpredictable and can not be quantified like road quality,
+     accidents, construction work, etc.
+    Disputed Areas… but we will come back to this later.
+
+The solution to most of these challenges lies in Dynamic Programming. And this is where we will introduce 
+something called Segment.
+Segment
+
+A segment is a small area that we can operate on easily. For example, a city can be divided into hundreds 
+of segments of size, let’s say, 1km X 1km. Each segment will have four coordinates and based on these 
+coordinates we can identify which segment the user is in. We will map the globe into segments, find paths
+ within these segments and keep building up our solution till we find the path between two required locations. Just to clarify here, when we say coordinates we mean latitude and longitude of the location. The easiest way to visualise a road network is as a graph, where each junction will be a node and each road will be an edge. Each edge can have multiple weights like distance, time, traffic etc. which we can use to find the shortest/quickest path. From this graph visualisation we can safely say there will be multiple paths between various points, so we will run any of the graph algorithms to find shortest paths between various points within the segment. Also to avoid recalculating these paths again and again, we will cache this information and we will call this shortest path a calculated edge or calculated path.
+Google maps system design - segments
+Exit of a Segment
+
+We will also cache the distances and calculated edges of each vertex from exit points of the segment. 
+Once we know the distance from segment exits we can easily calculate inter-segment distances.
+
+When we are navigating inter-segment, it is important that we identify how many segments we need to consider
+ for our algorithm, because we can’t run a Dijkstra’s for all the segments across the globe. To restrict 
+ the number of segments we use the aerial distance between the 2 points. Suppose aerial distance between 
+ points A and B is 10km, we can consider 10 segments across each direction i.e 400 segments, which is 
+ much better than the otherwise massive graph.
+
+Once the number of segments is restricted, we can restrict our graph such that the exit points of each 
+segment will become the vertices of the graph and the calculated paths between the two points and all 
+the exit points will become the edges of the graph. Now all we need to do to find the route is run a 
+Dijkstra’s on this graph.
+Mega Segment
+
+So we have now divided the map into segments and we know how to calculate inter-segment routes. But what 
+if the route spans over thousands of segments. Running Dijkstra’s on this huge graph will be very time 
+consuming. So we introduce another level of nesting called Mega Segments. We will now divide the map 
+into mega-segments which will be further divided into segments. Similar to how we cached calculated 
+edges between exit points for segments, we will also cache calculated paths between exit points for 
+mega-segments and run dijktra’s on this graph of exit points of mega segments.
+
+Now that we have a graph, how do we come up with weights for the edges? As we mentioned previously, 
+our edges can have multiple weights. There can be -
+
+    Distance
+    ETA
+    Average Speed
+
+We will not consider traffic, weather etc as weights because the are not that easily quantifiable. 
+Instead we will consider them as attributes that can effect the average speed. But now the question 
+is how to update the route when traffic/weather conditions change? Any change in these attributes 
+will change the average speed and in turn the ETA. As soon as the weight(ETA, avg speed) of the edges 
+is impacted the computed paths are recalculated to come up with a new route. This recalculation is 
+only done when the weight changes more than a threshold percentage. For eg, if the ETA changes by 
+more than x%, we will recalculate the path, otherwise we will stick to the current route.
+
+And that is the algorithm used by google maps to compute the route between two points. Now let us 
+have a look at the system architecture.
+System Architecture
+
+For ease of understanding we will understand the architecture in two parts. First we will see how 
+the users are connected to the application and how their location information is captured. In the 
+next part we will see the architecture for navigation flow.
+Google maps system architecture design
+
+    Capturing user location information Google maps system design capture user location information
+            If the user’s location setting is On, we will get regular pings from them.
+            We have a Web socket handler service that talks to all user devices.
+            Due to the large number of users, one web socket handler is not enough for our system. 
+            Multiple Web socket handlers will talk to different users. A Web socket manager will 
+            keep track of which handler is talking to which device.
+            A Redis which is connected to the web socket manager will store all this information.
+            We have a location service which is a repo of all location related information that 
+            we collect from the users.
+            The location service will store all this location permanently in a Cassandra data store.
+            As we receive location pings from user, Location service will send pings to Kafka.
+            All location pings coming into Kafka will be read by a spark streaming service, which 
+            can then use this information to add unidentified roads in our data, identify hot spots, 
+            identify change in avg speed etc.
+            If a new road needs to be added, spark streaming service will send a ping to Kafka which 
+            in turn will tell the map update service. Map update service will update segments related 
+            information in Cassandra data store with the help of graph processing service.
+            If spark streaming service identifies any change in avg speed it writes to Kafka which 
+            communicates with traffic update service.
+            Traffic update service again talks graph processing service to recalculate the new paths
+             and update in Cassandra data store.
+            All this constantly flowing data to spark streaming service is also dumped in a Hadoop
+             cluster from where it can be used for other jobs like user profiling, running ML algorithms
+              to identify size of new roads, to identify how many two wheelers or four wheelers are 
+              travelling the road etc.
+
+    User navigation flow Google maps user navigation flow architecture design
+            An area search service will convert address or area searched by the user to lat long coordinates.
+            A navigation service will keep track of user while they are travelling and send notifications 
+            if the user deviates from the suggested path.
+            A map service will receive navigation requests from the users and forward it to the graph 
+            processing service.
+            Graph processing service will talk to segment service which talks to Cassandra to get the 
+            segment related information.
+            If the Graph processing service has the cached route, it will immediately respond back 
+            otherwise it will start processing further, for which it takes information from Cassandra.
+            The Graph processing service will also receive notifications from third party data managers 
+            for live traffic, weather, accident related data. If this data is not available it might also 
+            query the historical data service for ETA.
+            Historical data service will maintain ETA related info according to the days and hours in a 
+            Cassandra data store, which can be used to identify ETA when traffic related information is 
+            not available.
+            Once GPS has a route it will communicate the response to the Map service will will further 
+            communicate with the user.
+            Now through this flow Kafka has been constantly receiving events for each search.This data 
+            can be used to identify information like which are the popular areas, what are the most 
+            frequented areas for each users, etc. This data we can use to do some optimisations or even 
+            for user profiling. This data can also be used to identify hoe reliable our third party 
+            services are. For example, if the ETA as per our traffic service is does not match with 
+            the real time information we are recording from the user, then that service is not reliable.
+            Kafka also interacts with the spark streaming service to runs some real time analytics 
+            like which road the user is on, which of our routes are unpopular etc.
+
+And that is all from architecture point of view. I am sure you guys have some questions about why we are 
+using which service like why Redis, why Cassandra, why Kafka. Well that is content for another article. 
+We have written an article on Choosing The Best Storage Solutions For Your Requirements. You can go through
+ it to understand when to use which databases or services and their alternatives.
+
+Now if you remember when we discussed some of the challenges while building this system, we mentioned 
+something called Disputed areas.
+Disputed Areas...? What is that!
+
+Let us consider the example of the dispute between the countries of India, China and Pakistan over the 
+state of Kashmir. How does Google mark the boundaries of the state when Pakistan claims some part of the
+ state belongs to them, China makes similar claims about another part of the state while India claims 
+ whole of Kashmir is under their jurisdiction. Here Google does something really cool. They mark the 
+ boundaries based on the country you are coming from! If the user is coming from India, whole of Kashmir 
+ will be marked as a part of India, where as if the user is travelling from Pakistan, the part that 
+ Pakistan claims to be under their territory is marked as Pakistan’s land and the part that is disputed
+  between India and china is marked as a dotted line and same for China.
+
+## Amazon_OA
+
+There were 2 questions, to be completed in 90 minutes.
+
+Q1. Given a sequence of coins each one facing upward (Head) or downward (Tail), we say it is a 'beautiful' sequence if all heads are before the tails.
+More formally, a beatiful sequence is of the form HH...TTT. For example HHTT, HHHTT, HTTT are beatiful sequences while HHTHT, THHTT are not.
+Note that also only heads or only tails sequence are considered beautiful, e.g. HHH or TTT.
+Write a program that takes as input a string representing the coins sequence and output the minimum number of coin flips (H -> T or T->H) necessary to make the sequence beatiful.
+
+For example, given the sequence HHTHTT, the answer should be 1 since it sufficient to flip the last H to make it beatiful (HHTTTT).
+
+Ans - Can be solved using https://leetcode.com/problems/flip-string-to-monotone-increasing/ replacing "0" with "H" and "1" with "T".
+
+Q2. Given an array ranks of ranks of students in a school. All students need to be split into groups k. Find the total 'imbalance' of all groups. An imabalance of a group can be found as :
+
+    Sorting each group in the order of their ranks.
+    A group contributes to imbalance if any 2 students in the sorted array have a rank difference of more than 1.
+
+Find the total sum of imbalance of all such groups.
+
+This is the example that was given :
+[4,1,3,2]
+[1] contributes 0 to imbalance
+[2] contributes 0 to imbalance
+[3] contributes 0 to imbalance
+[4] contributes 0 to imbalance
+[4,1] contributes 1 to imbalance
+[4,3] contributes 0 to imbalance
+[4,2] contributes 1 to imbalance
+[4,1,3,2] contributes 0 to imbalance
+[1,3] contributes 1 to imbalance
+[1,2] contributes 0 to imbalance
+[3,2] contributes 0 to imbalance
+Answer = 1 + 1 + 1 = 3
+
+
+```
+public static long imbalance(List<Integer> rank) {
+	long imbalance = 0;
+	int r = 0;
+	TreeSet<Integer> set = new TreeSet<>();
+	while(r < rank.size()-1) {
+		set.clear();
+		set.add(rank.get(r));
+		long curImbalance = 0;
+		for(int i=r+1; i<rank.size(); i++) {
+			Integer e = rank.get(i);
+			set.add(e);
+			Integer f = set.lower(e);
+			Integer c = set.higher(e);
+			
+			if(f == null) { // added at beginning
+				curImbalance += (((c - e) > 1) ? 1 : 0);
+			}
+			else if(c == null) {// added at end
+				curImbalance += (((e - f) > 1) ? 1 : 0);
+			}
+			else {
+				curImbalance += (c - f) > 1 ? -1 : 0;
+				curImbalance += (((c - e) > 1) ? 1 : 0);
+				curImbalance += (((e - f) > 1) ? 1 : 0);
+			}
+			imbalance += curImbalance;
+		}
+		r++;
+	}
+	return imbalance;
+}
+
+
+def numswaps(binary):
+    n = len(binary)
+    count = 0 
+    for i in range(n // 2):
+        if binary[i] != binary[n - i - 1]:
+            count += 1
+    if count % 2 == 1 and n % 2 == 0:
+        return -1
+    return (count + 1) // 2
+
+```
+## MS_Interview_TS
+
+1. ques on Consistent Hashing
+2. ques on Partitioning
+3. ques on parallel db commit  (raising)
+
+coding:
+FInd first patient, given a list of relations via list.
+
+```
+import java.util.*;
+
+/**
+ *
+ *     1                          -> 1->2  1->3  , 1->5
+ *   2     3     -> 2,3           ->  2->4 2->5 3->6
+ *
+ *                                         1->3->6
+ * 4   5      6                             1->  2->5,4
+ *
+ *
+ * @author nisharma
+ */
+
+class Pair{
+    int x;
+    int  y;
+    public Pair(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+}
+public class Test2 {
+
+
+    public static  int getFirstPatient(List<Pair> containList){
+        List<Integer> parentList = new ArrayList<>();
+        List<Integer> childList = new ArrayList<>();
+
+        for(Pair p: containList){
+            if(!parentList.contains(p.x)) {
+                if (!childList.contains(p.x)) {
+                    parentList.add((p.x));
+                    if (!childList.contains(p.y))
+                        childList.add((p.y));
+                    if (parentList.contains(p.y))
+                        parentList.remove(parentList.indexOf(p.y));
+                }
+            }else{
+                if (!childList.contains(p.y))
+                    childList.add((p.y));
+            }
+        }
+        if (parentList.size() ==0)
+            return  -1;
+        return  parentList.size()>1?-1:parentList.get(0);
+    }
+
+    public static void main(String[] args) {
+        Pair p1 = new Pair(1,2);
+        Pair p2 = new Pair(1,3);
+        Pair p3 = new Pair(2,3);
+        Pair p4 = new Pair(3,4);
+        Pair p5 = new Pair(0,1);
+        Pair p6 = new Pair(9,0);
+
+        List<Pair> ap = new ArrayList<>();
+        ap.add(p1);
+        ap.add(p2);
+        ap.add(p3);
+        ap.add(p4);
+        ap.add(p5);
+        ap.add(p6);
+        System.out.println(getFirstPatient(ap));
+
+    }
+}
+```
+
+## ubs_interview
+
+## Hotstar_Interview
+
+- Coding round 1
+Min Steps to target
+https://leetcode.com/problems/word-ladder/
+
+A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence of words beginWord -> s1 -> s2 -> ... -> sk such that:
+
+    Every adjacent pair of words differs by a single letter.
+    Every si for 1 <= i <= k is in wordList. Note that beginWord does not need to be in wordList.
+    sk == endWord
+
+Given two words, beginWord and endWord, and a dictionary wordList, return the number of words in the shortest transformation sequence from beginWord to endWord, or 0 if no such sequence exists.
+
+ 
+
+Example 1:
+
+Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
+Output: 5
+Explanation: One shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> cog", which is 5 words long.
+
+Example 2:
+
+Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
+Output: 0
+Explanation: The endWord "cog" is not in wordList, therefore there is no valid transformation sequence.
+
+ 
+
+Constraints:
+
+    1 <= beginWord.length <= 10
+    endWord.length == beginWord.length
+    1 <= wordList.length <= 5000
+    wordList[i].length == beginWord.length
+    beginWord, endWord, and wordList[i] consist of lowercase English letters.
+    beginWord != endWord
+    All the words in wordList are unique.
+
+
+
+Solution as png in gitrepo
+
+- Coding round 2
+
+given a string A>B;B>C;C>A -> Invalid | A>B;B>C;A>C -> Valid
+evalue the list of expressions as valid or invalid.
+
+solution : 2 hashmaps to save parent + child & child- parent mapping and iterate to check if child is already a parent to value. return false.
+
+
+
+
+
+## zolando
+
+
+abbabba : print size of maximun proper common prefix and suffix
+prefix abba
+suffix abba
+
+class Solution {
+    public int solution(String S) {
+        // write your code in Java SE 8
+        char[] arr = S.toCharArray();
+        int count =0, pMax = 0;
+        for(int i=0;i<arr.length && i<=arr.length-1-i;i++){
+            
+            if(arr[i] == arr[arr.length-1-i])
+                count+=1;
+            else 
+                break;
+            if(arr[arr.length-1-i] == arr[0])
+                pMax = count;
+
+        }
+
+
+        return pMax;
+    }
+}
+
+
+
+
+2. 
+
+A2Le = 2pL1 ommited can be replaced as ? and then as 1 or ?? as 2
+
+// you can also use imports, for example:
+// import java.util.*;
+
+// you can write to stdout for debugging purposes, e.g.
+// System.out.println("this is a debug message");
+
+class Solution {
+    public boolean solution(String S, String T) {
+        // write your code in Java SE 8
+        int slen = S.length(), tlen = T.length();
+        if( slen==0 && tlen == 0)
+            return true;
+        else if(slen ==0 && tlen>0 || slen >0 && tlen==0)
+            return false;
+
+        StringBuilder source = new StringBuilder();
+        StringBuilder target = new StringBuilder();
+        for(char c:S.toCharArray()){
+            if(!Character.isAlphabetic(c))
+                source.append('?');
+            else     
+                source.append(c);
+        }
+
+        for(char c:T.toCharArray()){
+            if(!Character.isAlphabetic(c))
+                target.append('?');
+            else     
+                target.append(c);            
+        }
+        slen = source.length() ;
+        if(slen != target.length())
+            return false;
+        for(int i=0;i<slen;i++){
+            if(source.charAt(i) == '?' || target.charAt(i) == '?' || source.charAt(i) == target.charAt(i))
+                continue;
+            else return false;
+        }
+
+
+        return true;
+    }
+}
+
+3. smallest number
+
+class Solution {
+    int solution(int[] A) {
+        int ans = Integer.MAX_VALUE;
+        for (int i = 1; i < A.length; i++) {
+            if (ans > A[i]) {
+                ans = A[i];
+            }
+        }
+        return ans;
+    }
+}
+
+
+## Ainterview_WquestionS
+
+## AWS_CERTIFICATION
+
+
+FREE AWS solution architect:
+
+1. AWS Certified Solutions Architect Associate Introduction
+https://lnkd.in/d4eR5gsW
+2. Amazon Web Services - Learning and Implementing AWS Solution
+https://lnkd.in/dATppQUa
+3. Amazon Web Services (AWS) - Zero to Hero
+https://lnkd.in/dMM9CgmU
+4. Starting your Career with Amazon AWS
+https://lnkd.in/dU7RYfJb
+5. Amazon AWS Core services- EC2, VPC, S3, IAM, DynamoDB, RDS
+https://lnkd.in/diRYukpz
+6. Learn Amazon Web Services (AWS) easily to become Architect
+https://lnkd.in/d4wx6yYv
+7. Amazon Web Services (AWS) EC2: An Introduction
+https://lnkd.in/drUvNuFk
+8. Amazon Web Services (AWS): CloudFormation
+https://lnkd.in/dAc65c-H
+9. AWS VPC Transit Gateway - Hands On Learning!
+https://lnkd.in/dTzjiTVv
+10. Introduction to Cloud Computing for Beginners in 30 mins
+https://lnkd.in/dfzCaPEN
+11. AWS Lambda - from ZERO to HERO
+https://lnkd.in/dfBRy2NE
+12. Cloud Computing With Amazon Web Services
+https://lnkd.in/dGD3FnAW
+13. Amazon AWS Cloud IAM Hands-On
+https://lnkd.in/ddSBhiST
+14. Master Amazon EC2 Basics with 10 Labs
+https://lnkd.in/d9jQ6cmN
+15. Multitier architecture with AWS
+https://lnkd.in/diKgCeSW
+16. Create and manage VPC on AWS Cloud
+https://lnkd.in/dumuhvnG
+17. Mastering AWS: Featuring IAM
+https://lnkd.in/dUs4NZeV
+18. AWS + Serverless
+https://lnkd.in/dtGAZmUK
+19. Amazon AWS Cloud EC2 Hands-On
+https://lnkd.in/dTc93nkq
+20. A Practical Introduction to Cloud Computing
+https://lnkd.in/dSMcrC_U
+21. Hosting your static website on Amazon AWS S3 service
+https://lnkd.in/dBw4RKs2
+22. AWS Tutorials - DynamoDB and Database Migration Service
+https://lnkd.in/dhSY8j7T
+23. Getting Started with Amazon Web Services
+https://lnkd.in/dvabaewb
+24. Build and Deploy a LAMP server on AWS
+https://lnkd.in/dNP6msQy
+25. All About AWS Lambda and Serverless
+https://lnkd.in/dip9ZWm5
+26. Serverless computing in AWS
+https://lnkd.in/dGsj5JTm
+
+## druva
+
+
+first round happend 2 weeks back via interviewvector
+question:
+in a sorted  rotated array find the number in log n complextiy.
+
+```
+\\ buggy solution
+class Test {
+    public int search(int[] nums, int target) {
+        
+        
+        int start =0, end = nums.length-1;
+        int prevMax = Integer.MIN_VALUE;
+        
+        if(nums[start] == target)
+        	return start;
+        else if(nums[end] == target)
+        	return end;
+        while(start<end){
+            int mid =  start + (end-start)/2;
+            if(nums[mid] == target)
+            	return mid;
+            if(nums[mid] >nums[mid-1] && nums[mid] > nums[mid+1]) {
+            	prevMax = mid;
+            	break;
+            }
+            	
+            if(nums[prevMax] <nums[mid] && nums[mid] > nums[start] && nums[mid]> nums[end]){
+                prevMax= mid;
+                start = mid+1;
+            }else if(nums[mid]<nums[start] && nums[mid]<nums[end]){
+                end = mid;
+            }
+        }
+        
+        if(target >= nums[start] && target <= nums[prevMax]) {
+        	end = start;
+        	start = 0;
+        }
+        else if(target<nums[start] && target>= nums[start+1])
+        {
+        	end = nums.length-1;
+        }
+        
+        while(start<end) {
+        	int mid = start + (end-start)/2;
+        	if(nums[mid] < target)
+        		start = mid+1;
+        	else if(nums[mid]> target)
+        		end = mid;
+        }
+		return nums[start] ==target? start :-1;
+    }
+    
+    public static void main(String[] args) {
+    	
+    	int[] arr = { 3, 6, 9, 11 ,0, 1,2};
+		new Test().search(arr, 0);
+	}
+}
+```
+
+
+
+Round 2 time 1: hour
+Interviewer was late,  after joining spent 5 more minutes in system setup, I was left with 45-50 mins.
+Intro + rate myself another 5 mins
+question 1: dbms
+```
+Student table
+name id 
+
+Subject Table
+id name 
+
+Result table
+
+sub_id student_id marks
+
+
+Expeceted get toppers names, marks of each subject, in case of tie get all student names:
+
+Questions 2 :
+
+write jaava program to print a tree in zig zag manner :
+
+
+he wanted to ask questions from Networking and Operating system as well. But time got over
+
+
+Not recommended
+
+
+
+
+
+Generated on Tue Jul 19 07:18:08 PM IST 2022
