@@ -7928,4 +7928,4 @@ In a system design, there are various big systems that involve types of blobs/ob
 |1 min 1080px video | 130 MB|
 |1 min 4K video|350 MB
 
-Generated on Mon Jun 19 09:35:17 PM IST 2023
+Generated on Mon Jun 19 09:45:25 PM IST 2023
