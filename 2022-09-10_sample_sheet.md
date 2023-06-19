@@ -686,18 +686,3 @@ Question 172. Find pairs with given sum such that elements of pair are in differ
 
 Read more
 
-Question 173. Common elements in all rows of a given matrix Problem Statement “Common elements in all rows of a given matrix” problem state that, you are given a matrix of M*N. The problem statement asks to find out all the common elements in a given matrix in each row of the matrix in O(M*N) time. Example arr[]={{12, 1, 4, 5,
-
-Read more
-
-Question 174. Collect maximum points in a grid using two traversals Problem Statement We are given a matrix of size “n x m”, and we need to collect maximum points in a grid using two traversals. If we are standing at cell i,j then we have three options to go to cell i+1, j or i+1, j-1or i+1, j+1. That is
-
-Read more
-
-Question 175. Given two unsorted arrays find all pairs whose sum is x Problem Statement Given two unsorted arrays, find all pairs whose sum is x problem states that you are given two arrays of integers that are unsorted and a value called sum. The problem statement asks to find out the total number of pairs and print all those pairs that add ...
-
-Read more
-
-Question 176. Sort elements by frequency Problem Statement You are given an array of integers, some numbers are repeated in it. The problem statement asks to print the number in the array in decreasing order according to their frequency that is to sort elements by frequency. Example arr[]={3,4,3,1,2,9,2,9,2,5 } 2 2 2 3 3 9 9
-
-
