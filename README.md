@@ -7898,7 +7898,7 @@ Availability Numbers
 
 In a system design interview, the High Availability discussion will happen for sure. It is defined as the ability of the system to be operational for a longer period of time. Below are some of the availability numbers you should know
 
-| *** Availability %** | * Downtime per year* | * Downtime per month* | * Downtime per day * |
+| ** Availability \% ** | * Downtime per year* | * Downtime per month* | * Downtime per day * |
 | :--- | :---: | :---: | :---: |
 | 90% (one nine) |36.53 days |73.05 hours | 2.40 hours|
 | 99% (two nines) | 3.65 days | 7.31 hours | 14.40 mins|
@@ -7928,4 +7928,4 @@ In a system design, there are various big systems that involve types of blobs/ob
 |1 min 1080px video | 130 MB|
 |1 min 4K video|350 MB
 
-Generated on Mon Jun 19 09:22:03 PM IST 2023
+Generated on Mon Jun 19 09:25:19 PM IST 2023
