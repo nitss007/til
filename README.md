@@ -134,8 +134,8 @@ Postman provides dynamic variables which can be used to generate content for req
 
 ```json
 {
-    "name": "Test Variant {{$randomInt}}",
-    "id": "{{$guid}}"
+    "name": "Test Variant {{\$randomInt}}",
+    "id": "{{\$guid}}"
 }
 ```
 
@@ -7942,4 +7942,4 @@ In a system design, there are various big systems that involve types of blobs/ob
 |1 min 1080px video | 130 MB|
 |1 min 4K video|350 MB
 
-Generated on Mon Jun 19 08:50:42 PM IST 2023
+Generated on Mon Jun 19 08:54:02 PM IST 2023
