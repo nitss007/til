@@ -4,8 +4,8 @@ Postman provides dynamic variables which can be used to generate content for req
 
 ```json
 {
-    "name": "Test Variant {{$randomInt}}",
-    "id": "{{$guid}}"
+    "name": "Test Variant {{\$randomInt}}",
+    "id": "{{\$guid}}"
 }
 ```
 

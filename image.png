@@ -1,0 +1,11 @@
+--2023-03-06 00:30:53--  https://assets.leetcode.com/users/images/f071a7bf-e880-4ec3-be77-559f21372efd_1677963952.0067663.jpeg
+Resolving assets.leetcode.com (assets.leetcode.com)... 2606:4700:20::681a:865, 2606:4700:20::ac43:48d5, 2606:4700:20::681a:965, ...
+Connecting to assets.leetcode.com (assets.leetcode.com)|2606:4700:20::681a:865|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 34512 (34K) [image/jpeg]
+Saving to: ‘f071a7bf-e880-4ec3-be77-559f21372efd_1677963952.0067663.jpeg’
+
+     0K .......... .......... .......... ...                  100% 10.4M=0.003s
+
+2023-03-06 00:30:53 (10.4 MB/s) - ‘f071a7bf-e880-4ec3-be77-559f21372efd_1677963952.0067663.jpeg’ saved [34512/34512]
+

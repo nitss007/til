@@ -54,18 +54,19 @@ In a system design interview, the latency numbers play a vital role in estimatio
 
 Availability Numbers
 
-In a system design interview, the High Availability discussion will happen for sure. It is defined as the ability of the system to be operational for a longer period of time. Below are some of the availability numbers you should know -
-| *** Availability %** | * Downtime per year* | * Downtime per month* | * Downtime per day * |
-| :--- | :---: |:---: |:---: |
-|90% (one nine) |36.53 days |73.05 hours | 2.40 hours|
-|99% (two nines) | 3.65 days | 7.31 hours | 14.40 mins|
-|99.9% (three nines) | 8.77 hours | 43.83 mins | 1.44 mins|
-|99.99% (four nines) | 52.60 mins | 4.38 mins | 8.64 secs|
-|99.999% (five nines) | 5.26 mins | 26.30 secs | 864.00 millisecs|
-|99.9999% (six nines) | 31.56 secs |2.63 secs |86.40 millisecs|
-|99.99999% (seven nines) | 3.16 secs |262.98 |8.64 millisecs|
-|99.999999% (eight nines)| 315.58 millisecs | 26.30 millisecs | 864.00 microsecs)|
-|99.9999999% (nine nines) |31.56 millisecs |2.63 millisecs |86.40 microsecs|
+In a system design interview, the High Availability discussion will happen for sure. It is defined as the ability of the system to be operational for a longer period of time. Below are some of the availability numbers you should know
+
+| ** Availability ** | *Downtime per year* | *Downtime per month* | *Downtime per day* |
+| :--- | :---: | :---: | :---: |
+| 90 percentage (one nine) | 36.53 days | 73.05 hours | 2.40 hours |
+| 99 percentage (two nines) | 3.65 days | 7.31 hours | 14.40 mins |
+| 99.9 percentage (three nines) | 8.77 hours | 43.83 mins | 1.44 mins |
+| 99.99 percentage (four nines) | 52.60 mins | 4.38 mins | 8.64 secs |
+| 99.999 percentage (five nines) | 5.26 mins | 26.30 secs | 864.00 millisecs |
+| 99.9999 percentage (six nines) | 31.56 secs | 2.63 secs | 86.40 millisecs |
+| 99.99999 percentage (seven nines) | 3.16 secs | 262.98 millisecs | 8.64 millisecs |
+| 99.999999 percentage (eight nines)| 315.58 millisecs | 26.30 millisecs | 864.00 microsecs) |
+| 99.9999999 percentage (nine nines) | 31.56 millisecs | 2.63 millisecs | 86.40 microsecs |
 
 
 Blob/Object Storage Sizes
