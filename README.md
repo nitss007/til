@@ -7966,6 +7966,14 @@ Sharing with you 30 golden rules to answer in System Design Interviews. The rule
     If asked which policy you would use to evict a Cache. The preferred/asked Cache eviction policy is LRU (Least Recently Used) Cache. Prepare around its Data Structure and Implementation.
 
 
+    Microservices resiliency : usage of circuit breakers for graceful degradation
+    Event driven systems: async processing and reduced tight-coupling between producers/ subscribers
+    Low latency high throughput systems : use async IO, event loop
+    Analytics: data warehouse solutions: Redshift, S3 etc.
 
 
-Generated on Tue Jun 20 03:17:38 PM IST 2023
+    when working with large datasets, complex queries, or when performance is critical use CQRS pattern
+    To maintain data consistency across multiple microservices in a transactional flow use SAGA pattern
+
+
+Generated on Tue Jun 20 03:19:15 PM IST 2023
